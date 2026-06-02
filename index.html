@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Semester II Timetable</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#0f172a;
+    color:white;
+    font-family:system-ui,sans-serif;
+    padding:20px;
+}
+
+.header{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.header h1{
+    color:#38bdf8;
+}
+
+.header p{
+    color:#94a3b8;
+}
+
+.table-container{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:900px;
+}
+
+th{
+    background:#1e293b;
+    color:#38bdf8;
+    padding:15px;
+}
+
+td{
+    background:#111827;
+    padding:15px;
+    text-align:center;
+    border:1px solid #1e293b;
+}
+
+.time{
+    background:#1e293b;
+    font-weight:bold;
+}
+
+.subject{
+    border-radius:10px;
+    padding:8px;
+    font-weight:600;
+}
+
+.sad{background:#2563eb;}
+.dsa{background:#16a34a;}
+.dbms{background:#dc2626;}
+.mm{background:#9333ea;}
+.ca{background:#ea580c;}
+.sh{background:#0891b2;}
+.prac{background:#475569;}
+
+.legend{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:10px;
+    margin-top:25px;
+}
+
+.legend div{
+    background:#1e293b;
+    padding:12px;
+    border-radius:10px;
+}
+
+.footer{
+    text-align:center;
+    margin-top:25px;
+    color:#94a3b8;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>📚 Semester II Timetable</h1>
+    <p>Department of Computer Science</p>
+</div>
+
+<div class="table-container">
+<table>
+<tr>
+    <th>Time</th>
+    <th>Monday</th>
+    <th>Tuesday</th>
+    <th>Wednesday</th>
+    <th>Thursday</th>
+    <th>Friday</th>
+</tr>
+
+<tr>
+    <td class="time">08:30 - 09:30</td>
+    <td></td>
+    <td><div class="subject prac">CO1214</div></td>
+    <td><div class="subject dsa">CO1222</div></td>
+    <td><div class="subject prac">CO1213</div></td>
+    <td><div class="subject sad">CO1221</div></td>
+</tr>
+
+<tr>
+    <td class="time">09:30 - 10:30</td>
+    <td><div class="subject mm">CO1224</div></td>
+    <td><div class="subject prac">CO1214</div></td>
+    <td><div class="subject dsa">CO1222</div></td>
+    <td><div class="subject prac">CO1213</div></td>
+    <td><div class="subject sad">CO1221</div></td>
+</tr>
+
+<tr>
+    <td class="time">10:30 - 11:30</td>
+    <td><div class="subject dbms">CO1223</div></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td><div class="subject sad">CO1221</div></td>
+</tr>
+
+<tr>
+    <td class="time">11:30 - 12:30</td>
+    <td><div class="subject dbms">CO1223</div></td>
+    <td><div class="subject sh">CO1226</div></td>
+    <td><div class="subject sh">CO1226</div></td>
+    <td><div class="subject sh">CO1226</div></td>
+    <td><div class="subject sh">CO1226</div></td>
+</tr>
+
+<tr>
+    <td class="time">12:30 - 01:30</td>
+    <td colspan="5" style="background:#020617;color:#facc15;font-weight:bold;">
+        🍔 LUNCH BREAK
+    </td>
+</tr>
+
+<tr>
+    <td class="time">01:30 - 02:30</td>
+    <td><div class="subject prac">CO1212</div></td>
+    <td></td>
+    <td></td>
+    <td><div class="subject mm">CO1224</div></td>
+    <td><div class="subject sad">CO1221</div></td>
+</tr>
+
+<tr>
+    <td class="time">02:30 - 03:30</td>
+    <td><div class="subject prac">CO1212</div></td>
+    <td><div class="subject ca">CO1225</div></td>
+    <td></td>
+    <td></td>
+    <td><div class="subject sad">CO1221</div></td>
+</tr>
+
+<tr>
+    <td class="time">03:30 - 04:30</td>
+    <td><div class="subject prac">CO1212</div></td>
+    <td><div class="subject ca">CO1225</div></td>
+    <td></td>
+    <td></td>
+    <td><div class="subject sad">CO1221</div></td>
+</tr>
+
+</table>
+</div>
+
+<div class="legend">
+    <div>🔵 CO1221 - System Analysis & Design</div>
+    <div>🟢 CO1222 - Data Structures & Algorithms</div>
+    <div>🔴 CO1223 - Database Management Systems</div>
+    <div>🟣 CO1224 - Multimedia & Hypermedia</div>
+    <div>🟠 CO1225 - Computer Architecture</div>
+    <div>🔷 CO1226 - Social Harmony</div>
+    <div>⚪ CO1212/13/14 - Practicals</div>
+</div>
+
+<div class="footer">
+    Academic Session Started: 20 May 2026
+</div>
+
+</body>
+</html>
