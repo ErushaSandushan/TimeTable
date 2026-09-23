@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0f19">
+  <title>Year I Semester II — Exam Countdown</title>
+  <style>
+    :root {
+      --bg: #070a12;
+      --surface: #0d1220;
+      --surface-2: #12192a;
+      --border: #222b3d;
+      --text: #f3f6ff;
+      --muted: #8994aa;
+      --accent: #7c5cff;
+      --accent-2: #5eead4;
+      --danger: #fb7185;
+      --shadow: 0 18px 50px rgba(0,0,0,.30);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 15% 0%, rgba(124,92,255,.13), transparent 32rem),
+        radial-gradient(circle at 90% 20%, rgba(94,234,212,.07), transparent 28rem),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+                   "Segoe UI", sans-serif;
+    }
+
+    .wrap { width: min(1080px, calc(100% - 32px)); margin: auto; }
+
+    header {
+      padding: 58px 0 34px;
+    }
+
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 10px 0 8px;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1.05;
+      letter-spacing: -.04em;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .hero {
+      margin-top: 28px;
+      padding: 25px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: linear-gradient(145deg, rgba(18,25,42,.94), rgba(10,14,24,.94));
+      box-shadow: var(--shadow);
+    }
+
+    .hero-label {
+      color: var(--muted);
+      font-size: .8rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      font-weight: 700;
+    }
+
+    #nextSubject {
+      margin: 7px 0 18px;
+      font-size: clamp(1.25rem, 3vw, 1.8rem);
+      font-weight: 800;
+    }
+
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .unit {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 15px 10px;
+      text-align: center;
+    }
+
+    .unit strong {
+      display: block;
+      font-size: clamp(1.5rem, 5vw, 2.25rem);
+      letter-spacing: -.04em;
+    }
+
+    .unit span {
+      color: var(--muted);
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+
+    .progress-wrap { margin-top: 18px; }
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: .78rem;
+      margin-bottom: 7px;
+    }
+
+    .bar {
+      height: 7px;
+      background: #1b2333;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    #progress {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      border-radius: inherit;
+      transition: width .4s ease;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin: 44px 0 16px;
+    }
+
+    .section-head h2 { margin: 0; font-size: 1.3rem; }
+    .section-head p { margin: 0; color: var(--muted); font-size: .85rem; }
+
+    .schedule { display: grid; gap: 12px; padding-bottom: 50px; }
+
+    .exam {
+      position: relative;
+      display: grid;
+      grid-template-columns: 92px 1fr auto;
+      gap: 20px;
+      align-items: center;
+      padding: 18px 20px;
+      background: rgba(13,18,32,.82);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .exam:hover {
+      transform: translateY(-2px);
+      border-color: #37435c;
+      background: rgba(18,25,42,.92);
+    }
+
+    .exam.next {
+      border-color: rgba(124,92,255,.65);
+      box-shadow: 0 0 0 1px rgba(124,92,255,.08), 0 12px 35px rgba(124,92,255,.08);
+    }
+
+    .exam.done { opacity: .48; }
+
+    .date {
+      text-align: center;
+      border-right: 1px solid var(--border);
+      padding-right: 20px;
+    }
+
+    .date .day { font-size: 1.55rem; font-weight: 850; }
+    .date .month { color: var(--accent-2); font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .date .weekday { color: var(--muted); font-size: .7rem; margin-top: 3px; }
+
+    .subject-code {
+      color: var(--accent-2);
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .subject {
+      margin-top: 4px;
+      font-size: 1rem;
+      font-weight: 750;
+      line-height: 1.35;
+    }
+
+    .type {
+      display: inline-block;
+      margin-top: 7px;
+      padding: 4px 8px;
+      border-radius: 7px;
+      background: #171f31;
+      color: var(--muted);
+      font-size: .68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .exam-countdown {
+      min-width: 160px;
+      text-align: right;
+    }
+
+    .exam-countdown strong {
+      display: block;
+      font-size: .98rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .exam-countdown span {
+      color: var(--muted);
+      font-size: .7rem;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-bottom: 5px;
+      padding: 4px 8px;
+      border-radius: 7px;
+      background: rgba(124,92,255,.16);
+      color: #b7a9ff;
+      font-size: .65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 22px 0 40px;
+      color: var(--muted);
+      font-size: .75rem;
+      text-align: center;
+    }
+
+    @media (max-width: 720px) {
+      header { padding-top: 38px; }
+      .exam {
+        grid-template-columns: 68px 1fr;
+        gap: 14px;
+      }
+      .date { padding-right: 14px; }
+      .date .day { font-size: 1.3rem; }
+      .exam-countdown {
+        grid-column: 2;
+        min-width: 0;
+        text-align: left;
+        border-top: 1px solid var(--border);
+        padding-top: 10px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .wrap { width: min(100% - 20px, 1080px); }
+      .hero { padding: 18px; }
+      .countdown { gap: 6px; }
+      .unit { padding: 12px 5px; }
+      .unit strong { font-size: 1.35rem; }
+      .unit span { font-size: .62rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div class="eyebrow">BSc Computer Science · Year I · Semester II</div>
+      <h1>Exam Countdown</h1>
+      <p class="subtitle">2023/2024 Examination · All times are Sri Lanka time (UTC+05:30)</p>
+
+      <section class="hero" aria-live="polite">
+        <div class="hero-label">Next exam</div>
+        <div id="nextSubject">Loading…</div>
+
+        <div class="countdown">
+          <div class="unit"><strong id="days">--</strong><span>Days</span></div>
+          <div class="unit"><strong id="hours">--</strong><span>Hours</span></div>
+          <div class="unit"><strong id="minutes">--</strong><span>Minutes</span></div>
+          <div class="unit"><strong id="seconds">--</strong><span>Seconds</span></div>
+        </div>
+
+        <div class="progress-wrap">
+          <div class="progress-meta">
+            <span id="nextDate">—</span>
+            <span id="examNumber">—</span>
+          </div>
+          <div class="bar"><div id="progress"></div></div>
+        </div>
+      </section>
+    </header>
+
+    <div class="section-head">
+      <div>
+        <h2>Examination schedule</h2>
+        <p>Countdowns update automatically every second.</p>
+      </div>
+    </div>
+
+    <section class="schedule" id="schedule"></section>
+
+    <footer>
+      Exam dates and times taken from the released examination timetable. Venue information intentionally omitted.
+    </footer>
+  </main>
+
+  <script>
+    // Sri Lanka Standard Time (UTC+05:30)
+    const exams = [
+      { code: "CO1221", name: "System Analysis & Design", type: "Theory", date: "2026-10-07T13:00:00+05:30", end: "2026-10-07T15:00:00+05:30" },
+      { code: "CO1226", name: "Social Harmony", type: "Theory", date: "2026-10-09T09:30:00+05:30", end: "2026-10-09T11:30:00+05:30" },
+      { code: "CO1214", name: "Practical Work on CO1224", type: "Practical", date: "2026-10-15T09:30:00+05:30", end: "2026-10-15T11:30:00+05:30" },
+      { code: "CO1224", name: "Multi Media & Hyper Media Development", type: "Theory", date: "2026-10-16T09:30:00+05:30", end: "2026-10-16T11:30:00+05:30" },
+      { code: "CO1212", name: "Practical Work on CO1222", type: "Practical", date: "2026-10-20T09:30:00+05:30", end: "2026-10-20T11:30:00+05:30" },
+      { code: "CO1225", name: "Computer Architecture", type: "Theory", date: "2026-10-22T13:00:00+05:30", end: "2026-10-22T15:00:00+05:30" },
+      { code: "CO1213", name: "Practical Work on CO1223", type: "Practical", date: "2026-10-26T09:30:00+05:30", end: "2026-10-26T11:30:00+05:30" },
+      { code: "CO1223", name: "Data Base Management Systems", type: "Theory", date: "2026-10-28T13:00:00+05:30", end: "2026-10-28T15:00:00+05:30" },
+      { code: "CO1222", name: "Data Structures & Algorithms", type: "Theory", date: "2026-10-30T09:30:00+05:30", end: "2026-10-30T11:30:00+05:30" }
+    ];
+
+    const schedule = document.getElementById("schedule");
+
+    function parts(ms) {
+      const total = Math.max(0, Math.floor(ms / 1000));
+      return {
+        days: Math.floor(total / 86400),
+        hours: Math.floor((total % 86400) / 3600),
+        minutes: Math.floor((total % 3600) / 60),
+        seconds: total % 60
+      };
+    }
+
+    function formatDate(iso) {
+      return new Intl.DateTimeFormat("en-LK", {
+        weekday: "long", day: "numeric", month: "long", year: "numeric",
+        hour: "numeric", minute: "2-digit", hour12: true, timeZone: "Asia/Colombo"
+      }).format(new Date(iso));
+    }
+
+    function shortDate(iso) {
+      const d = new Date(iso);
+      return {
+        day: new Intl.DateTimeFormat("en-LK", { day: "2-digit", timeZone: "Asia/Colombo" }).format(d),
+        month: new Intl.DateTimeFormat("en-LK", { month: "short", timeZone: "Asia/Colombo" }).format(d),
+        weekday: new Intl.DateTimeFormat("en-LK", { weekday: "short", timeZone: "Asia/Colombo" }).format(d)
+      };
+    }
+
+    function renderSchedule() {
+      schedule.innerHTML = exams.map((exam, i) => {
+        const d = shortDate(exam.date);
+        return `
+          <article class="exam" id="exam-${i}">
+            <div class="date">
+              <div class="day">${d.day}</div>
+              <div class="month">${d.month}</div>
+              <div class="weekday">${d.weekday}</div>
+            </div>
+            <div>
+              <div class="subject-code">${exam.code}</div>
+              <div class="subject">${exam.name}</div>
+              <span class="type">${exam.type}</span>
+            </div>
+            <div class="exam-countdown">
+              <div class="badge" id="badge-${i}">Upcoming</div>
+              <strong id="count-${i}">—</strong>
+              <span>${formatDate(exam.date)}</span>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function update() {
+      const now = Date.now();
+      const nextIndex = exams.findIndex(e => new Date(e.date).getTime() > now);
+      const next = nextIndex === -1 ? null : exams[nextIndex];
+
+      exams.forEach((exam, i) => {
+        const card = document.getElementById(`exam-${i}`);
+        const badge = document.getElementById(`badge-${i}`);
+        const count = document.getElementById(`count-${i}`);
+        const start = new Date(exam.date).getTime();
+        const end = new Date(exam.end).getTime();
+
+        card.classList.toggle("next", i === nextIndex);
+
+        if (now >= end) {
+          card.classList.add("done");
+          badge.textContent = "Completed";
+          count.textContent = "Finished";
+        } else if (now >= start) {
+          badge.textContent = "In progress";
+          count.textContent = "Exam is happening now";
+        } else {
+          const p = parts(start - now);
+          badge.textContent = i === nextIndex ? "Next exam" : "Upcoming";
+          count.textContent = `${p.days}d ${String(p.hours).padStart(2,"0")}h ${String(p.minutes).padStart(2,"0")}m`;
+        }
+      });
+
+      if (!next) {
+        document.getElementById("nextSubject").textContent = "All exams completed";
+        document.getElementById("days").textContent = "0";
+        document.getElementById("hours").textContent = "00";
+        document.getElementById("minutes").textContent = "00";
+        document.getElementById("seconds").textContent = "00";
+        document.getElementById("nextDate").textContent = "Semester II examination schedule complete";
+        document.getElementById("examNumber").textContent = "";
+        document.getElementById("progress").style.width = "100%";
+        return;
+      }
+
+      const remaining = parts(new Date(next.date).getTime() - now);
+      document.getElementById("nextSubject").textContent =
+        `${next.code}: ${next.name}`;
+      document.getElementById("days").textContent = remaining.days;
+      document.getElementById("hours").textContent = String(remaining.hours).padStart(2, "0");
+      document.getElementById("minutes").textContent = String(remaining.minutes).padStart(2, "0");
+      document.getElementById("seconds").textContent = String(remaining.seconds).padStart(2, "0");
+      document.getElementById("nextDate").textContent = formatDate(next.date);
+      document.getElementById("examNumber").textContent =
+        `Exam ${nextIndex + 1} of ${exams.length}`;
+
+      const previousTime = nextIndex === 0
+        ? Date.now()
+        : new Date(exams[nextIndex - 1].end).getTime();
+      const startTime = new Date(next.date).getTime();
+      const progress = Math.max(0, Math.min(100,
+        ((now - previousTime) / (startTime - previousTime)) * 100
+      ));
+      document.getElementById("progress").style.width = `${progress}%`;
+    }
+
+    renderSchedule();
+    update();
+    setInterval(update, 1000);
+  </script>
+</body>
+</html>
